@@ -32,4 +32,8 @@ public class DomainService {
     public void deleteDomain(String id) {
         repository.deleteById(id);
     }
+
+    public void deleteAllDomains() {
+        repository.deleteAll();
+    }
 }

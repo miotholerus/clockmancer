@@ -1,0 +1,48 @@
+{
+  "domains": [
+    {
+      "id": "d1",
+      "hostname": "www.abc.com",
+      "limited": true,
+      "trackDates": [
+        {
+          "id": "d1t1",
+          "date": "2022-05-01",
+          "seconds": 3723
+        },
+        {
+          "id": "d1t2",
+          "date": "2022-05-02",
+          "seconds": 1781
+        },
+        {
+          "id": "d1t3",
+          "date": "2022-05-03",
+          "seconds": 4317
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "hostname": "www.def.com",
+      "limited": false,
+      "trackDates": [
+        {
+          "id": "d2t1",
+          "date": "2022-05-01",
+          "seconds": 1000
+        },
+        {
+          "id": "d2t2",
+          "date": "2022-05-02",
+          "seconds": 1200
+        },
+        {
+          "id": "d2t3",
+          "date": "2022-05-03",
+          "seconds": 2100
+        }
+      ]
+    }
+  ]
+}

@@ -12,10 +12,9 @@ public class Domain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String hostname;
+    private boolean limited;
     @OneToMany
     private Set<TrackDate> trackDates;
-    @OneToOne
-    private Limitation limitation;
 
     public String getId() {
         return id;
@@ -33,19 +32,19 @@ public class Domain {
         this.hostname = hostname;
     }
 
+    public boolean getLimited() {
+        return limited;
+    }
+
+    public void setLimited(boolean limited) {
+        this.limited = limited;
+    }
+
     public Set<TrackDate> getTrackDates() {
         return trackDates;
     }
 
     public void setTrackDates(Set<TrackDate> trackDates) {
         this.trackDates = trackDates;
-    }
-
-    public Limitation getLimitation() {
-        return limitation;
-    }
-
-    public void setLimitation(Limitation limitation) {
-        this.limitation = limitation;
     }
 }

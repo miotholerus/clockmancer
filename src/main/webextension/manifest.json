@@ -1,0 +1,37 @@
+{
+	"manifest_version": 2,
+	"name": "Clockmancer",
+	"description": "Tracking time spent on each domain",
+	"version": "1.1.1",
+	"icons": {
+		"64": "icons/icon.png"
+	},
+	"background": {
+		"scripts": [
+			"background.js"
+		]
+	},
+	"browser_action": {
+		"default_icon": {
+			"64": "icons/icon.png"
+		},
+		"default_popup": "browserAction/display.html",
+		"default_title": "Clockmancer"
+	},
+	"options_ui": {
+		"page": "options/options.html",
+		"open_in_tab": true,
+		"browser_style": false,
+		"chrome_style": false
+	},
+	"permissions": [
+		"alarms",
+		"tabs",
+		"*://*.localhost/*"
+	],
+	"browser_specific_settings": {
+        "gecko": {
+            "id": "mio@example.com"
+        }
+    }
+}

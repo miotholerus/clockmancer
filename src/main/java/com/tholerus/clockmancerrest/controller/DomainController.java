@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+//@CrossOrigin("")
 @RestController
 @RequestMapping("/domain")
 public class DomainController {
@@ -49,8 +50,8 @@ public class DomainController {
         if (domainOpt.isPresent()) {
             Domain domain = domainOpt.get();
             domain.setHostname(newDomain.getHostname());
+            domain.setLimited(newDomain.getLimited());
             domain.setTrackDates(newDomain.getTrackDates());
-            domain.setLimitation(newDomain.getLimitation());
             Domain updatedDomain = service.saveDomain(domain);
             return ResponseEntity.created(new URI("/domain/" + updatedDomain.getId())).body(updatedDomain);
         } else {
@@ -61,6 +62,15 @@ public class DomainController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDomain(@PathVariable String id) {
         service.deleteDomain(id);
+        return ResponseEntity
+                .noContent()
+                //.headers?
+                .build();
+    }
+
+    @DeleteMapping("/clear")
+    public ResponseEntity<Void> deleteAllDomains() {
+        service.deleteAllDomains();
         return ResponseEntity
                 .noContent()
                 //.headers?

@@ -1,0 +1,24 @@
+body {
+  margin: 40px;
+  background-color: /*#570a57*/ purple;
+  color: plum;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* or Verdana */
+  font-size: 15px;
+}
+
+h1 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* or Verdana */
+  font-size: 15px;
+  color: plum;
+  cursor: pointer;
+}
+button:hover {
+  color: #330133
+}
