@@ -26,7 +26,13 @@ public class DomainService {
     }
 
     public Domain saveDomain(Domain domain) {
-        return repository.save(domain); // Why do I have to cast?
+        // Prevents domain from being added if one with the same hostname already exists
+        Optional<Domain> domainOpt = repository.getDomainByHostname(domain.getHostname());
+        if (domainOpt.isPresent()) {
+            domain.setId(domainOpt.get().getId());
+            // OBS - detta KAN skriva över seconds till 0, håll koll
+        }
+        return repository.save(domain);
     }
 
     public void deleteDomain(String id) {

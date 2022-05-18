@@ -21,7 +21,7 @@ function getTimeInfo(seconds) {
 }
 
 myPort.onMessage.addListener((m) => {
-  console.log("*** KÖR OPTIONS MESSAGE ***")
+  console.log("*** KÖR DISPLAY MESSAGE ***")
 
   // Töm listan (alla tr-element med namnet "domain")
   var elements = document.getElementsByName("domain");
