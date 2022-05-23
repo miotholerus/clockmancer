@@ -11,6 +11,7 @@ public class Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    @Column(unique=true)
     private String hostname;
     private boolean limited;
     @OneToMany
