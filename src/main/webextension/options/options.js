@@ -1,23 +1,21 @@
 /**
- * Är hostname på options-sidan alltid 55fcf9c9-ed7a-402b-bc31-9c741b30944f ?
- * Bör jag då hindra den domänen från att läggas till i databasen?
+ * Hur kan jag hindra options-domänen från att läggas till i databasen?
+ * Förslag: kontrollera att domänen innehåller punkter innan den läggs till
  */
 
-let myPort = browser.runtime.connect({name: "port-from-display"});
-
+let myPort = browser.runtime.connect({name: "port-across-extension"});
 const url = "http://localhost:8080/domain";
-
 const today = new Date(Date.now());
-let domainsFromSession = [];
-let domainsFromDB = [];
-let domainsMerged = [];
 
-const domainTable = document.querySelector(".domain-table");
-let output = "";
+const domainTable = document.querySelector(".stats-table");
+let tableOutput = "";
 
-function matchingDates(dateA, dateB) {
-    console.log("Checking if the dates match")
-    return dateA.substring(0, 10) === dateB.toLocaleDateString();
+/**
+ * Funktion som returnerar true om ett datum från databasen och ett JS-datumobjekt matchar
+ */
+function matchingDates(dbDateString, jsDateObject) {
+    const dateFromDb = new Date(dbDateString);
+    return dateFromDb.toLocaleDateString() === jsDateObject.toLocaleDateString();
 }
 
 function getTimeInfo(seconds) {
@@ -39,30 +37,42 @@ function getTimeInfo(seconds) {
     return time;
 }
 
-myPort.onMessage.addListener((m) => {
-    console.log("*** KÖR OPTIONS MESSAGE ***")
-    console.log(today);
+fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(domain => {
+            let trackDate = domain.trackDates.find(td => matchingDates(td.date, today));
+            const timeInfo = trackDate ? getTimeInfo(trackDate.seconds) : "&nbsp;--";
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            data.forEach(domain => {
-                if (domain.hostname.length > 0) {
-                    // TODO: Visa alla domäner, inte bara dagens.
-                    output += `
-                        <tr name="domain">
-                            <td>${domain.hostname}</td>
-                            <td>${getTimeInfo(domain.trackDates.find(td => matchingDates(td.date, today)).seconds)}</td>
-                        </tr>
-                    `;
-                }
-            })
-            domainTable.innerHTML = output;
-        });
-});
+            tableOutput += `
+                <tr id="${domain.id}">
+                    <td class="table-hostname">${domain.hostname}</td>
+                    <td>${timeInfo}</td>
+                    <td><button class="delete" id="delete">×</button></td>
+                </tr>
+            `;
+        })
+        domainTable.innerHTML = tableOutput;
 
+        domainTable.addEventListener("click", (e) => {
+            e.preventDefault();
+            let deleteButtonIsPressed = e.target.id === "delete";
 
-// function readAllDomains() {
-//     var data = {};
-//     data[""]
-// }
+            const domainId = e.target.parentElement.parentElement.id;
+            // ...dataset.id enligt tutorial, men bara id verkar funka?
+
+            // Delete domain
+            if (deleteButtonIsPressed) {
+                // Denna måste hittas på ett annat sätt om fler element tillkommer längst till vänster i tabellen
+                const hostname = e.target.parentElement.parentElement.firstElementChild.innerHTML.toString();
+
+                fetch(`${url}/${domainId}`, {
+                    method: "DELETE"
+                }).then(() => {
+                    myPort.postMessage({deleteDomain: hostname});
+                    // Kommer den hinna raderas innan sidan omrenderas (och domänen isf postas på nytt)?
+                }).then(() => location.reload());
+            }
+        })
+
+    });

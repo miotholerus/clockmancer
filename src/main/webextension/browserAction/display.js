@@ -1,4 +1,4 @@
-let myPort = browser.runtime.connect({name: "port-from-display"});
+let myPort = browser.runtime.connect({name: "port-across-extension"});
 // myPort.postMessage({greetingFromDisplay: "hello from display"});
 
 function getTimeInfo(seconds) {
@@ -24,8 +24,8 @@ myPort.onMessage.addListener((m) => {
   console.log("*** KÖR DISPLAY MESSAGE ***")
 
   // Töm listan (alla tr-element med namnet "domain")
-  var elements = document.getElementsByName("domain");
-  for(var i = elements.length - 1; i >= 0; i--) {
+  let elements = document.getElementsByName("domain");
+  for(let i = elements.length - 1; i >= 0; i--) {
     elements[i].parentNode.removeChild(elements[i]);
   }
   
@@ -33,18 +33,19 @@ myPort.onMessage.addListener((m) => {
   for (let i = 0; i < m.myDomains.length; i++) {
     const domain = m.myDomains[i];
 
-    // Om hostname finns (är längre än "")
-    if (domain.hostname.length > 0) {
+    // Om hostname finns (är längre än "") och innehåller minst en punkt
+    if (domain.hostname.length > 0 && domain.hostname.includes(".")) {
       // Skapa en rad
       const tr = document.createElement("tr");
       tr.setAttribute("name", "domain");
       
       const td1 = document.createElement("td");
-      const button = document.createElement("button");
-      button.innerHTML = domain.hostname.length > 24 ?
+      // Om jag vill göra domänerna klickbara:
+      // const button = document.createElement("button");
+      td1.innerHTML = domain.hostname.length > 24 ?
         domain.hostname.substring(0, 21) + "... "
         : domain.hostname;
-      td1.appendChild(button);
+      // td1.appendChild(button);
 
       const td2 = document.createElement("td");
       if (domain.hostname == m.currentHostname) {

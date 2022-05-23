@@ -4,15 +4,25 @@
     <meta charset="UTF-8">
     <link href="../global-style.css" rel="stylesheet" />
     <link href="options.css" rel="stylesheet" />
+    <title>Clockmancer</title>
   </head>
   <body>
-    <h1 id="myHeading">Options</h1>
-    <table class="domain-table">
-      <tr name="domain">
-        <td>${domain.hostname}</td>
-        <td>time</td>
-      </tr>
-    </table>
+    <h1 id="myHeading">Cl<small>⏱</small>ckmancer</h1>
+    <div class="stats-field">
+      <h3>Stats</h3>
+      <div class="stats-box">
+        <div class="btn-field">
+          <button class="stats-btn today" onclick="test(e)">Today</button>
+          <button class="stats-btn week">This week</button>
+          <button class="stats-btn total">All time</button>
+        </div>
+        <table class="stats-table" id="stats-table">
+        </table>
+      </div>
+    </div>
+    <div class="junk-field">
+
+    </div>
     <script src="options.js"></script>
   </body>
 </html>
