@@ -5,12 +5,20 @@ import com.tholerus.clockmancerrest.repository.DomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DomainService {
     private DomainRepository repository;
+
+    private boolean matchingDates(Date dateA, Date dateB) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(dateA).equals(formatter.format(dateB));
+    }
 
     @Autowired
     public DomainService(DomainRepository repository) {
@@ -23,6 +31,18 @@ public class DomainService {
 
     public Optional<Domain> getDomainById(String id) {
         return repository.findById(id);
+    }
+
+    public Optional<Domain> getDomainByHostname(String hostname) {
+        return repository.getDomainByHostname(hostname);
+    }
+
+    public List<Domain> getDomainsForToday() {
+        Date today = new Date();
+        List<Domain> allDomains = repository.findAll();
+        // TODO: Clarify this mess
+        List<Domain> domainsToday = allDomains.stream().filter(d -> d.getTrackDates().stream().filter(td -> matchingDates(td.getDate(), today)).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
+        return domainsToday;
     }
 
     public Domain saveDomain(Domain domain) {

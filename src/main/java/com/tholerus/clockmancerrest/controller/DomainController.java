@@ -35,6 +35,18 @@ public class DomainController {
         else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/hostname/{hostname}")
+    public ResponseEntity<Domain> getDomainByHostname(@PathVariable String hostname) {
+        Optional<Domain> domainOpt = service.getDomainByHostname(hostname);
+        if (domainOpt.isPresent()) return ResponseEntity.ok().body(domainOpt.get());
+        else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<Domain>> getDomainsForToday() {
+        return ResponseEntity.ok().body(service.getDomainsForToday());
+    }
+
     @PostMapping("")
     public ResponseEntity<Domain> createDomain(@RequestBody Domain domain) throws URISyntaxException {
         Domain createdDomain = service.saveDomain(domain);
