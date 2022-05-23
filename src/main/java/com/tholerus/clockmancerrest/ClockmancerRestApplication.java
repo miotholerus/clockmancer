@@ -2,14 +2,10 @@ package com.tholerus.clockmancerrest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//@Configuration
-//@EntityScan(basePackages = "com.tholerus.clockmancerrest")
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 public class ClockmancerRestApplication {
 

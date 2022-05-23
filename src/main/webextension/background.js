@@ -8,8 +8,8 @@ let today = new Date();
 let myDomains = [];
 let newDomain = {seconds: 0, limited: false};
 
-let count = 0; // §
-let timer; // §
+let count = 0;
+let timer;
 
 /**
  * Sätter upp kontakten med Display för att uppdatera vyn + skicka tillbaka användarinput från Options
@@ -21,7 +21,7 @@ browser.runtime.onConnect.addListener((port) => {
         currentHostname: newDomain.hostname,
         count: count
     });
-    // Om jag vill skicka tillbaka information från display (eller options), gör så här:
+    // Lyssnar på när information om vilken domän som ska tas bort skickas från Options
     portAcrossExtension.onMessage.addListener(m => {
         console.log(m.deleteDomain);
         let deleteIndex;
@@ -253,10 +253,10 @@ function postToDatabase(domain) {
  * TODO: Hitta ett sätt att pausa räknaren när fönstret inte är aktivt.
  * JS window-API fungerar inte i bakgrundsskript.
  */
-function timerHandler() { // §
+function timerHandler() {
     count++;
 }
-function startTimer() { // §
+function startTimer() {
     timer = setInterval(timerHandler, 1000);
 }
 function stopTimer() {
