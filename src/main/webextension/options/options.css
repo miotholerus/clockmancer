@@ -1,3 +1,66 @@
-h1 {
-  font-style: italic;
+.stats-field {
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+}
+button.stats-btn {
+  background-color: #8c6c00; /*#7c147c;*/ /*#800080;*/
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 15px;
+  color: #362900;
+  cursor: pointer;
+  border: solid 1px #362900;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  width: 130px;
+  border-radius: 2px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+button.today {
+  border-radius: 8px 2px 2px 2px;
+}
+button.week {
+  background-color: #4f3c00;
+  color: #261d00;
+}
+button.total {
+  border-radius: 2px 8px 2px 2px;
+  background-color: #4f3c00;
+  color: #261d00;
+}
+
+button.delete {
+  background: none !important;
+  border: none;
+  /*padding: 0!important;*/
+  /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; !* or Verdana *!*/
+  /*font-size: 15px;*/
+  color: #b98f00;
+  cursor: pointer;
+}
+button.delete:hover {
+  color: #7c147c;
+}
+
+tr:nth-child(even), table.stats-table thread> tr {
+  background: #590059;
+  /*background-clip: content-box;*/
+  border-radius: inherit !important;
+}
+tr:last-child {
+  /* Funkar inte med border-collapse: collapse */
+  border-radius: 0px 0px 8px 8px;
+}
+table.stats-table {
+  background: #3b013b;
+  border: none;
+  border-radius: 0px 0px 8px 8px !important;
+  border-collapse: collapse;
+  padding: 4px;
+  width: 399px;
+}
+.table-hostname {
+  padding-left: 6px;
+  /*padding: 2px 2px 2px 6px;*/
 }

@@ -4,7 +4,7 @@
 	"description": "Tracking time spent on each domain",
 	"version": "1.1.1",
 	"icons": {
-		"64": "icons/icon.png"
+		"64": "icons/clockmancer-icon.png"
 	},
 	"background": {
 		"scripts": [
@@ -13,7 +13,7 @@
 	},
 	"browser_action": {
 		"default_icon": {
-			"64": "icons/icon.png"
+			"64": "icons/clockmancer-icon.png"
 		},
 		"default_popup": "browserAction/display.html",
 		"default_title": "Clockmancer"

@@ -1,0 +1,31 @@
+html {
+    overflow-y: scroll;
+}
+
+button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* or Verdana */
+    font-size: 15px;
+    color: plum;
+    cursor: pointer;
+}
+button:hover {
+    color: #330133
+}
+
+div.link-field {
+    text-align: center;
+    padding-top: 16px;
+}
+a.stats-and-settings {
+    text-decoration: none;
+    /*color: inherit;*/
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+a:hover {
+    color: #330133
+}
+
