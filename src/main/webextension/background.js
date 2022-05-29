@@ -61,7 +61,7 @@ let millisTil00 = new Date(today.getFullYear(), today.getMonth(), today.getDate(
 setTimeout(() => {
     let activeTabAtMidnight = browser.tabs.query({active: true, currentWindow: true});
     activeTabAtMidnight.then((tabs) => {
-        addCountToDomainAndGetNew(tabs[0]);
+        addCountToDomainAndGetNew();
         today = new Date();
         myDomains = [];
         newDomain = {hostname: tabs[0].hostname, seconds: 0, limited: false};
@@ -76,7 +76,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log("Tabs updated")
     // (Tycks alltid vara complete)
     if (tab.status == "complete") {
-        addCountToDomainAndGetNew(tab);
+        addCountToDomainAndGetNew();
         getDomainAndAddIfUnique(tab);
     }
 });
@@ -86,11 +86,23 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
  */
 browser.windows.onFocusChanged.addListener(() => {
     console.log("Focus changed");
-    let activeTab2 = browser.tabs.query({active: true, currentWindow: true});
-    activeTab2.then((tabs) => {
-        addCountToDomainAndGetNew(tabs[0]);
-        getDomainAndAddIfUnique(tabs[0]);
-    });
+    // Kollar om något fönster är aktivt
+    browser.windows.getAll().then(windows => {
+        let activeWindow = windows.find(w => w.focused);
+        if (activeWindow) {
+            browser.tabs.query({active: true, currentWindow: true})
+                .then((tabs) => {
+                    addCountToDomainAndGetNew();
+                    getDomainAndAddIfUnique(tabs[0]);
+                    if (timer == null) startTimer();
+                });
+        } else {
+            console.log("Window blurred");
+            stopTimer();
+        }
+    })
+
+
 });
 
 /**
@@ -102,11 +114,10 @@ function matchingDates(dbDateString, jsDateObject) {
 }
 
 function fetchTodayDataFromDB() {
-    fetch(url)
+    fetch(`${url}/today`)
         .then(res => res.json())
         .then(data => {
             data.forEach(dbDomain => {
-                // TODO: Kan bytas ut mot getDomainsForToday-API
                 const trackDateToday = dbDomain.trackDates.find(td => matchingDates(td.date, today));
                 if (trackDateToday) {
                     let domainToAddToSession = {};
@@ -118,14 +129,14 @@ function fetchTodayDataFromDB() {
             })
         }).then(() => {
             count = 0;
-            startTimer();
+            if (timer == null) startTimer();
         });
 }
 
 /**
  * Funktion som lägger till sekunder på den senaste domänen och hämtar den nya
  */
-function addCountToDomainAndGetNew(tab) {
+function addCountToDomainAndGetNew() {
     const domain = myDomains.find(d => d.hostname == newDomain.hostname);
     if (domain) {
         domain.seconds += count;
@@ -191,6 +202,7 @@ function postToDatabase(domain) {
                     } else {
                         // Dagens datum finns inte i domänens trackDates - lägg till det i domänens set av trackDates (datumet + sekunder)
                         reqBody.trackDates.push({
+                            // Referens till domän (domainId eller domainHostname)
                             date: today,
                             seconds: sessionDomain.seconds
                         });
@@ -227,7 +239,11 @@ function postToDatabase(domain) {
                         reqBody = {
                             hostname: sessionDomain.hostname,
                             limited: false,
-                            trackDates: [{date: today, seconds: sessionDomain.seconds}]
+                            trackDates: [{
+                                // Referens till domän (domainId eller domainHostname)
+                                date: today,
+                                seconds: sessionDomain.seconds
+                            }]
                         };
 
                         // POST domain
@@ -250,8 +266,6 @@ function postToDatabase(domain) {
 
 /**
  * Räknar sekunder
- * TODO: Hitta ett sätt att pausa räknaren när fönstret inte är aktivt.
- * JS window-API fungerar inte i bakgrundsskript.
  */
 function timerHandler() {
     count++;
@@ -261,10 +275,8 @@ function startTimer() {
 }
 function stopTimer() {
     clearInterval(timer);
+    timer = null;
 }
 
 // TODO: Kvarvarande buggar (background)
-// - Timern fortsätter räkna när fönstret inte är aktivt
 // - Vid notiser i en flik tolkas den fliken som den aktiva
-// - (LÖST?) Lägger till flera trackDates av samma datum (händer strax efter tolvslaget, beror på tidszons-diff)
-// - (LÖST?) Om sessionen ligger kvar från igår hämtas inte den nya dagen och tiden fortsätter lagras på gårdagen
