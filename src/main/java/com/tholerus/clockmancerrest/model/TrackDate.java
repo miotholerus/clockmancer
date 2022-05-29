@@ -2,18 +2,18 @@ package com.tholerus.clockmancerrest.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity
 @Document
 public class TrackDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    // Reference to domain
+    // private String (domainId or domainHostname);
     private Date date;
     private int seconds;
 

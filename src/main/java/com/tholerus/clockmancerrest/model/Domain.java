@@ -1,17 +1,17 @@
 package com.tholerus.clockmancerrest.model;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Document
 public class Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    @Column(unique=true)
+    @Indexed(unique = true)
     private String hostname;
     private boolean limited;
     @OneToMany
