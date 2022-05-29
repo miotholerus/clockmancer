@@ -16,4 +16,9 @@ h1 {
 
 h3 {
   font-family: Georgia, 'Times New Roman', Times, serif;
+  font-variant: small-caps;
+}
+h5 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-variant: small-caps;
 }

@@ -24,6 +24,7 @@ a.stats-and-settings {
     /*color: inherit;*/
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: bold;
+    font-variant: small-caps;
 }
 a:hover {
     color: #330133

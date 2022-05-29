@@ -46,9 +46,10 @@ fetch(url)
 
             tableOutput += `
                 <tr id="${domain.id}">
+                    <!--<td class="table-hostname"><large style="color: #474236;">👁</large>&nbsp;&nbsp;${domain.hostname}</td>-->
                     <td class="table-hostname">${domain.hostname}</td>
-                    <td>${timeInfo}</td>
-                    <td><button class="delete" id="delete">×</button></td>
+                    <td class="time-field">${timeInfo}</td>
+                    <td class="del-field"><button class="delete" id="delete">×</button></td>
                 </tr>
             `;
         })
